@@ -1,0 +1,29 @@
+{
+    "name": "paveldanilin/php-tinkoff-payment",
+    "description": "Tinkoff payment client for PHP 7.4+",
+	"keywords": ["Tinkoff", "pay", "payment", "kassa"],
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Pada\\Tinkoff\\Payment\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Pavel",
+            "email": "pavel.k.danilin@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.4.0",
+		"paveldanilin/rest-client": "v1.2.1"
+    },
+	"require-dev": {
+		"phpstan/phpstan": "0.12.99",
+		"monolog/monolog": "2.8.0"
+	},
+	"scripts": {
+		"test": "php -d memory_limit=4G ./vendor/bin/phpstan analyse -c phpstan.neon"
+	}
+}
