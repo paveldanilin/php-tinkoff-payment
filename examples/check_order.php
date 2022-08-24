@@ -1,23 +1,28 @@
 <?php
 
+use Pada\Tinkoff\Payment\Configuration;
+use Pada\Tinkoff\Payment\PaymentClient;
+use Pada\Tinkoff\Payment\PaymentClientInterface;
+use Pada\Tinkoff\Payment\Contract\CheckOrderResultInterface;
+
 require 'vendor/autoload.php';
 
 // ------------------------------------------------------------------------------------------------
 // 1 - Create Payment client
 
-$config = new \Pada\Tinkoff\Payment\Configuration();
+$config = new Configuration();
 $config->setTerminalKey('<terminal_key>');
 $config->setPassword('<password>');
 
-/** @var \Pada\Tinkoff\Payment\PaymentClientInterface $paymentClient */
-$paymentClient = new \Pada\Tinkoff\Payment\PaymentClient($config);
+/** @var PaymentClientInterface $paymentClient */
+$paymentClient = new PaymentClient($config);
 
 
 // ------------------------------------------------------------------------------------------------
 // 2 - Invoke API and process response
 
-/** @var \Pada\Tinkoff\Payment\Contract\CheckOrderResultInterface $result */
-$result = $paymentClient->checkOrder(333335556669);
+/** @var CheckOrderResultInterface $result */
+$result = $paymentClient->checkOrder(1234567890);
 
 if ($result->isSuccess()) {
     // Do some logic
