@@ -10,7 +10,7 @@ final class DataKV
      */
     private array $data;
 
-    public function __construct(array $data)
+    public function __construct(array $data = [])
     {
         $this->setAll($data);
     }

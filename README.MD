@@ -8,30 +8,67 @@
 ### Создание клиента
 
 ```php
-$config = new \Pada\Tinkoff\Payment\Configuration();
+$config = new Configuration();
 $config->setTerminalKey('<terminal_key>');
 $config->setPassword('<password>');
 
-/** @var \Pada\Tinkoff\Payment\PaymentClientInterface $paymentClient */
-$paymentClient = new \Pada\Tinkoff\Payment\PaymentClient($config);
+/** @var PaymentClientInterface $paymentClient */
+$paymentClient = new PaymentClient($config);
 ```
 
 ### Создание платежа
 
-[Создает платеж](https://www.tinkoff.ru/kassa/develop/api/payments/init-description/)
+[API создания платежа](https://www.tinkoff.ru/kassa/develop/api/payments/init-description/)
+
+[Полный пример](examples/init.php)
 
 ```php
-$newPayment = new \Pada\Tinkoff\Payment\Model\Init\NewPayment();
-$newPayment->setAmount(102);
-$newPayment->setOrderId('333335556669');
-$newPayment->setPayType(\Pada\Tinkoff\Payment\Constant::PAY_TYPE_ONE_STEP);
+$payment = newPayment()
+    ->amount(1000)
+    ->orderId('1234')
+    ->oneStep()
+->build();
 
-/** @var \Pada\Tinkoff\Payment\Contract\NewPaymentResultInterface $result */
-$result = $paymentClient->init($newPayment);
+/** @var NewPaymentResultInterface $result */
+$result = $paymentClient->init($payment);
 
 if ($result->isSuccess()) {
     // Do some logic
     print 'PaymentId: ' . $result->getPaymentId() . "\n";
+    print 'PaymentURL: ' . $result->getPaymentURL() . "\n";
+} else {
+    // Process error
+    print 'Error: ' . $result->getMessage() . "\n";
+}
+```
+
+### Создание платежа с чеком
+
+[Полный пример](examples/init.php)
+
+```php
+$payment = newPayment()
+    ->orderId('33101')
+    ->oneStep()
+    ->receipt(newReceipt()
+        ->email('pavel.k.danilin@gmail.com')
+        ->taxationOSN()
+        ->addItem(newReceiptItem()
+            ->name('Кружка')
+            ->price(1000)
+            ->quantity(1)
+            ->taxNone()
+            ->build())
+        ->build())
+    ->build();
+
+/** @var NewPaymentResultInterface $result */
+$result = $paymentClient->init($payment);
+
+if ($result->isSuccess()) {
+    // Do some logic
+    print 'PaymentId: ' . $result->getPaymentId() . "\n";
+    print 'PaymentURL: ' . $result->getPaymentURL() . "\n";
 } else {
     // Process error
     print 'Error: ' . $result->getMessage() . "\n";
@@ -40,10 +77,12 @@ if ($result->isSuccess()) {
 
 ### Отмена платежа
 
-[Отменяет платеж](https://www.tinkoff.ru/kassa/develop/api/payments/cancel-description/)
+[API отмена платежа](https://www.tinkoff.ru/kassa/develop/api/payments/cancel-description/)
+
+[Полный пример](examples/cancel.php)
 
 ```php
-/** @var \Pada\Tinkoff\Payment\Contract\CancelResultInterface $result */
+/** @var CancelResultInterface $result */
 $result = $paymentClient->cancel(1645861116);
 
 if ($result->isSuccess()) {
@@ -57,10 +96,12 @@ if ($result->isSuccess()) {
 
 ### Получение текущего статуса платежа
 
-[Метод возвращает текущий статус платежа](https://www.tinkoff.ru/kassa/develop/api/payments/getstate-description/)
+[API получение текущего статуса платежа](https://www.tinkoff.ru/kassa/develop/api/payments/getstate-description/)
+
+[Полный пример](examples/get_state.php)
 
 ```php
-/** @var \Pada\Tinkoff\Payment\Contract\GetStateResultInterface $result */
+/** @var GetStateResultInterface $result */
 $result = $paymentClient->getState(1645861116);
 
 if ($result->isSuccess()) {
@@ -74,10 +115,12 @@ if ($result->isSuccess()) {
 
 ### Получение статуса заказа
 
-[Метод возвращает статус заказа](https://www.tinkoff.ru/kassa/develop/api/payments/checkorder-description/)
+[API получение статуса заказа](https://www.tinkoff.ru/kassa/develop/api/payments/checkorder-description/)
+
+[Полный пример](examples/check_order.php)
 
 ```php
-/** @var \Pada\Tinkoff\Payment\Contract\CheckOrderResultInterface $result */
+/** @var CheckOrderResultInterface $result */
 $result = $paymentClient->checkOrder(333335556669);
 
 if ($result->isSuccess()) {
@@ -99,10 +142,12 @@ if ($result->isSuccess()) {
 
 ### Повторить неуспешные нотификации
 
-[Метод позволяет переотправить неуспешные нотификации в течение 24 часов с момента попадания в архив](https://www.tinkoff.ru/kassa/develop/api/payments/resend-description/)
+[API повторной отправки неуспешных нотификаций](https://www.tinkoff.ru/kassa/develop/api/payments/resend-description/)
+
+[Полный пример](examples/resend.php)
 
 ```php
-/** @var \Pada\Tinkoff\Payment\Contract\ResendResultInterface $result */
+/** @var ResendResultInterface $result */
 $result = $paymentClient->resendNotifications();
 
 if ($result->isSuccess()) {

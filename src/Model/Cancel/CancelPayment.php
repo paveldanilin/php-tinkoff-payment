@@ -3,6 +3,7 @@
 namespace Pada\Tinkoff\Payment\Model\Cancel;
 
 use Pada\Tinkoff\Payment\Contract\CancelInterface;
+use Pada\Tinkoff\Payment\Contract\ReceiptInterface;
 use Pada\Tinkoff\Payment\Model\AbstractRequest;
 
 final class CancelPayment extends AbstractRequest implements CancelInterface
@@ -10,9 +11,8 @@ final class CancelPayment extends AbstractRequest implements CancelInterface
     private int $paymentId = 0;
     private ?int $amount = null;
     private ?string $ip = null;
+    private ?ReceiptInterface $receipt = null;
 
-    // TODO: Receipt	Массив данных чека. См. Структура объекта Receipt
-    //В чеке указываются данные товаров, подлежащих возврату	object	Да, если настроена интеграция онлайн-кассы
 
     public function getPaymentId(): int
     {
@@ -42,5 +42,15 @@ final class CancelPayment extends AbstractRequest implements CancelInterface
     public function setIp(?string $ip): void
     {
         $this->ip = $ip;
+    }
+
+    public function getReceipt(): ?ReceiptInterface
+    {
+        return $this->receipt;
+    }
+
+    public function setReceipt(?ReceiptInterface $receipt): void
+    {
+        $this->receipt = $receipt;
     }
 }

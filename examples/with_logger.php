@@ -1,23 +1,34 @@
 <?php
 
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
+use Pada\Tinkoff\Payment\Configuration;
+use Pada\Tinkoff\Payment\PaymentClient;
+use Pada\Tinkoff\Payment\PaymentClientInterface;
+use Pada\Tinkoff\Payment\Contract\NewPaymentResultInterface;
+use Psr\Log\LogLevel;
+use function Pada\Tinkoff\Payment\Functions\newPayment;
+use function Pada\Tinkoff\Payment\Functions\newReceipt;
+use function Pada\Tinkoff\Payment\Functions\newReceiptItem;
+
 require 'vendor/autoload.php';
 
 // ------------------------------------------------------------------------------------------------
 // 1 - Create Payment client
 
-$config = new \Pada\Tinkoff\Payment\Configuration();
+$config = new Configuration();
 $config->setTerminalKey('<terminal_key>');
 $config->setPassword('<password>');
 
-/** @var \Pada\Tinkoff\Payment\PaymentClientInterface $paymentClient */
-$paymentClient = new \Pada\Tinkoff\Payment\PaymentClient($config);
+/** @var PaymentClientInterface $paymentClient */
+$paymentClient = new PaymentClient($config);
 
 
 // ------------------------------------------------------------------------------------------------
 // 2 - Init logger
-$logger = new \Monolog\Logger('payment');
+$logger = new Logger('payment');
 // Now add some handlers
-$logger->pushHandler(new \Monolog\Handler\StreamHandler('payment.log', \Psr\Log\LogLevel::DEBUG));
+$logger->pushHandler(new StreamHandler('payment.log', LogLevel::DEBUG));
 
 $paymentClient->setLogger($logger);
 
@@ -25,16 +36,26 @@ $paymentClient->setLogger($logger);
 // ------------------------------------------------------------------------------------------------
 // 3 - Create New payment model
 
-$newPayment = new \Pada\Tinkoff\Payment\Model\Init\NewPayment();
-$newPayment->setAmount(105);
-$newPayment->setOrderId('333335556669');
-$newPayment->setPayType(\Pada\Tinkoff\Payment\Constant::PAY_TYPE_ONE_STEP);
-
+$newPayment = newPayment()
+    ->amount(100)
+    ->orderId('123')
+    ->oneStep()
+    ->receipt(newReceipt()
+        ->email('pavel.k.danilin@gmail.com')
+        ->taxationENVD()
+        ->addItem(newReceiptItem()
+            ->name('Товар')
+            ->price(100)
+            ->quantity(1)
+            ->taxNone()
+            ->build())
+        ->build())
+->build();
 
 // ------------------------------------------------------------------------------------------------
 // 4 - Invoke API and process response
 
-/** @var \Pada\Tinkoff\Payment\Contract\NewPaymentResultInterface $result */
+/** @var NewPaymentResultInterface $result */
 $result = $paymentClient->init($newPayment);
 
 if ($result->isSuccess()) {

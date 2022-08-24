@@ -3,6 +3,7 @@
 namespace Pada\Tinkoff\Payment\Model\Init;
 
 use Pada\Tinkoff\Payment\Contract\NewPaymentInterface;
+use Pada\Tinkoff\Payment\Contract\ReceiptInterface;
 use Pada\Tinkoff\Payment\DataKV;
 use Pada\Tinkoff\Payment\Model\AbstractRequest;
 
@@ -10,14 +11,19 @@ final class NewPayment extends AbstractRequest implements NewPaymentInterface
 {
     private int $amount = 0;
     private string $orderId = '';
-    private ?string $payType = null; // Constant::LANGUAGE_xx
+    private ?string $payType = null;
     private ?string $ip = null;
     private ?string $description = null;
-    private ?string $language = null; // Constant::PAY_TYPE_xxx
+    private ?string $language = null;
     private ?string $successURL = null;
     private ?string $failURL = null;
     private ?string $notificationURL = null;
     private ?DataKV $data = null;
+    private ?ReceiptInterface $receipt = null;
+    private bool $isRecurrent = false;
+    private ?string $customerKey = null;
+    private ?\DateTime $redirectDueDate = null;
+
 
     public function getAmount(): int
     {
@@ -54,7 +60,7 @@ final class NewPayment extends AbstractRequest implements NewPaymentInterface
         return $this->successURL;
     }
 
-    public function setSuccessURL(string $successURL): void
+    public function setSuccessURL(?string $successURL): void
     {
         $this->successURL = $successURL;
     }
@@ -64,7 +70,7 @@ final class NewPayment extends AbstractRequest implements NewPaymentInterface
         return $this->failURL;
     }
 
-    public function setFailURL(string $failURL): void
+    public function setFailURL(?string $failURL): void
     {
         $this->failURL = $failURL;
     }
@@ -74,7 +80,7 @@ final class NewPayment extends AbstractRequest implements NewPaymentInterface
         return $this->notificationURL;
     }
 
-    public function setNotificationURL(string $notificationURL): void
+    public function setNotificationURL(?string $notificationURL): void
     {
         $this->notificationURL = $notificationURL;
     }
@@ -117,5 +123,45 @@ final class NewPayment extends AbstractRequest implements NewPaymentInterface
     public function setData(?DataKV $data): void
     {
         $this->data = $data;
+    }
+
+    public function getReceipt(): ?ReceiptInterface
+    {
+        return $this->receipt;
+    }
+
+    public function setReceipt(?ReceiptInterface $receipt): void
+    {
+        $this->receipt = $receipt;
+    }
+
+    public function isRecurrent(): bool
+    {
+        return $this->isRecurrent;
+    }
+
+    public function setRecurrent(bool $recurrent): void
+    {
+        $this->isRecurrent = $recurrent;
+    }
+
+    public function getCustomerKey(): ?string
+    {
+        return $this->customerKey;
+    }
+
+    public function setCustomerKey(?string $customerKey): void
+    {
+        $this->customerKey = $customerKey;
+    }
+
+    public function getRedirectDueDate(): ?\DateTime
+    {
+        return $this->redirectDueDate;
+    }
+
+    public function setRedirectDueDate(?\DateTime $redirectDueDate): void
+    {
+        $this->redirectDueDate = $redirectDueDate;
     }
 }

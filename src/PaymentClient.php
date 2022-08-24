@@ -7,9 +7,11 @@ use Pada\Tinkoff\Payment\Contract\CheckOrderResultInterface;
 use Pada\Tinkoff\Payment\Contract\GetStateResultInterface;
 use Pada\Tinkoff\Payment\Contract\NewPaymentInterface;
 use Pada\Tinkoff\Payment\Contract\NewPaymentResultInterface;
+use Pada\Tinkoff\Payment\Contract\ReceiptInterface;
 use Pada\Tinkoff\Payment\Contract\ResendResultInterface;
 use Pada\Tinkoff\Payment\Interceptor\TerminalKeyInterceptor;
 use Pada\Tinkoff\Payment\Interceptor\TokenInterceptor;
+use Pada\Tinkoff\Payment\Model\Cancel\CancelPayment;
 use Pada\Tinkoff\Payment\Model\Cancel\CancelResult;
 use Pada\Tinkoff\Payment\Model\CheckOrder\CheckOrderResult;
 use Pada\Tinkoff\Payment\Model\GetState\GetStateResult;
@@ -59,8 +61,6 @@ class PaymentClient extends DefaultJsonRestClient implements PaymentClientInterf
     /**
      * @see https://www.tinkoff.ru/kassa/develop/api/payments/cancel-description/
      *
-     * TODO: add Receipt
-     *
      * @param int $paymentId
      * @param int|null $amount
      * @param string|null $ip
@@ -68,13 +68,33 @@ class PaymentClient extends DefaultJsonRestClient implements PaymentClientInterf
      */
     public function cancel(int $paymentId, ?int $amount = null, ?string $ip = null): CancelResultInterface
     {
-        $cancel = new Model\Cancel\CancelPayment();
-        $cancel->setPaymentId($paymentId);
-        $cancel->setAmount($amount);
-        $cancel->setIp($ip);
+        $cancelPayment = new Model\Cancel\CancelPayment();
+        $cancelPayment->setPaymentId($paymentId);
+        $cancelPayment->setAmount($amount);
+        $cancelPayment->setIp($ip);
 
         /** @var CancelResult|null $result */
-        $result = $this->postForObject('/v2/Cancel', CancelResult::class, $cancel);
+        $result = $this->postForObject('/v2/Cancel', CancelResult::class, $cancelPayment);
+        return $result;
+    }
+
+    /**
+     * @see https://www.tinkoff.ru/kassa/develop/api/payments/cancel-description/
+     *
+     * @param int $paymentId
+     * @param ReceiptInterface $receipt
+     * @param string|null $ip
+     * @return CancelResultInterface
+     */
+    public function cancelWithReceipt(int $paymentId, ReceiptInterface $receipt, ?string $ip = null): CancelResultInterface
+    {
+        $cancelPayment = new Model\Cancel\CancelPayment();
+        $cancelPayment->setPaymentId($paymentId);
+        $cancelPayment->setReceipt($receipt);
+        $cancelPayment->setIp($ip);
+
+        /** @var CancelResult|null $result */
+        $result = $this->postForObject('/v2/Cancel', CancelResult::class, $cancelPayment);
         return $result;
     }
 
