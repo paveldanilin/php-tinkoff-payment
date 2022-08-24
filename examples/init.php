@@ -1,36 +1,55 @@
 <?php
 
+use Pada\Tinkoff\Payment\Configuration;
+use Pada\Tinkoff\Payment\PaymentClient;
+use Pada\Tinkoff\Payment\PaymentClientInterface;
+use Pada\Tinkoff\Payment\Contract\NewPaymentResultInterface;
+use function Pada\Tinkoff\Payment\Functions\newPayment;
+use function Pada\Tinkoff\Payment\Functions\newReceipt;
+use function Pada\Tinkoff\Payment\Functions\newReceiptItem;
+
 require 'vendor/autoload.php';
 
 // ------------------------------------------------------------------------------------------------
 // 1 - Create Payment client
 
-$config = new \Pada\Tinkoff\Payment\Configuration();
+$config = new Configuration();
 $config->setTerminalKey('<terminal_key>');
 $config->setPassword('<password>');
 
-/** @var \Pada\Tinkoff\Payment\PaymentClientInterface $paymentClient */
-$paymentClient = new \Pada\Tinkoff\Payment\PaymentClient($config);
+/** @var PaymentClientInterface $paymentClient */
+$paymentClient = new PaymentClient($config);
 
 
 // ------------------------------------------------------------------------------------------------
 // 2 - Create New payment model
 
-$newPayment = new \Pada\Tinkoff\Payment\Model\Init\NewPayment();
-$newPayment->setAmount(102);
-$newPayment->setOrderId('333335556669');
-$newPayment->setPayType(\Pada\Tinkoff\Payment\Constant::PAY_TYPE_ONE_STEP);
+$payment = newPayment()
+    ->orderId('1234')
+    ->oneStep()
+    ->receipt(newReceipt()
+        ->email('pavel.k.danilin@gmail.com')
+        ->taxationOSN()
+        ->addItem(newReceiptItem()
+            ->name('Кружка')
+            ->price(1000)
+            ->quantity(1)
+            ->taxNone()
+            ->build())
+        ->build())
+    ->build();
 
 
 // ------------------------------------------------------------------------------------------------
 // 3 - Invoke API and process response
 
-/** @var \Pada\Tinkoff\Payment\Contract\NewPaymentResultInterface $result */
-$result = $paymentClient->init($newPayment);
+/** @var NewPaymentResultInterface $result */
+$result = $paymentClient->init($payment);
 
 if ($result->isSuccess()) {
     // Do some logic
-    print 'PaymentId: ' . $result->getPaymentId() . "\n";
+    print 'PaymentId:  ' . $result->getPaymentId() . "\n";
+    print 'PaymentURL: ' . $result->getPaymentURL() . "\n";
 } else {
     // Process error
     print 'Error: ' . $result->getMessage() . "\n";

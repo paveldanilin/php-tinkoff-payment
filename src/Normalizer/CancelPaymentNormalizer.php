@@ -8,6 +8,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 final class CancelPaymentNormalizer implements NormalizerInterface
 {
     use SetterTrait;
+    use ReceiptNormalizerTrait;
 
     public function normalize($object, string $format = null, array $context = []): array
     {
@@ -22,6 +23,12 @@ final class CancelPaymentNormalizer implements NormalizerInterface
 
         $this->setIfNotNull('IP', $cancelPayment->getIp(), $data);
         $this->setIfNotNull('Amount', $cancelPayment->getAmount(), $data);
+        $this->setIfNotNull('Receipt', function () use($cancelPayment) {
+            if (null === $cancelPayment->getReceipt()) {
+                return null;
+            }
+            return $this->normalizeReceipt($cancelPayment->getReceipt());
+        }, $data);
 
         return $data;
     }
