@@ -11,7 +11,6 @@ use Pada\Tinkoff\Payment\Contract\ReceiptInterface;
 use Pada\Tinkoff\Payment\Contract\ResendResultInterface;
 use Pada\Tinkoff\Payment\Interceptor\TerminalKeyInterceptor;
 use Pada\Tinkoff\Payment\Interceptor\TokenInterceptor;
-use Pada\Tinkoff\Payment\Model\Cancel\CancelPayment;
 use Pada\Tinkoff\Payment\Model\Cancel\CancelResult;
 use Pada\Tinkoff\Payment\Model\CheckOrder\CheckOrderResult;
 use Pada\Tinkoff\Payment\Model\GetState\GetStateResult;
@@ -23,10 +22,8 @@ use Pada\Tinkoff\Payment\Normalizer\CheckOrderNormalizer;
 use Pada\Tinkoff\Payment\Normalizer\NewPaymentNormalizer;
 use Pada\Tinkoff\Payment\Normalizer\GetStateNormalizer;
 use Pada\Tinkoff\Payment\Normalizer\ResendNormalizer;
-use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
 use RestClient\DefaultJsonRestClient;
-use RestClient\Interceptor\LogRequestInterceptor;
+
 
 class PaymentClient extends DefaultJsonRestClient implements PaymentClientInterface
 {
@@ -34,15 +31,6 @@ class PaymentClient extends DefaultJsonRestClient implements PaymentClientInterf
     {
         parent::__construct($configuration, [], $this->getNormalizer());
         $this->setInterceptors($this->getClientInterceptors());
-    }
-
-    public function setLogger(LoggerInterface $logger): void
-    {
-        $interceptors = $this->getClientInterceptors();
-        if (!($logger instanceof NullLogger)) {
-            $interceptors[] = new LogRequestInterceptor($logger);
-        }
-        $this->setInterceptors($interceptors);
     }
 
     /**
