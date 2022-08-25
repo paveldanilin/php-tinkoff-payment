@@ -11,7 +11,13 @@ final class NewPaymentNormalizer implements NormalizerInterface
     use SetterTrait;
     use ReceiptNormalizerTrait;
 
-    public function normalize($object, string $format = null, array $context = []): array
+    /**
+     * @param mixed $object
+     * @param string|null $format
+     * @param array $context
+     * @return array
+     */
+    public function normalize($object, $format = null, array $context = [])
     {
         /** @var NewPaymentInterface $initPayment */
         $initPayment = $object;
@@ -60,7 +66,12 @@ final class NewPaymentNormalizer implements NormalizerInterface
         return $data;
     }
 
-    public function supportsNormalization($data, string $format = null): bool
+    /**
+     * @param mixed $data
+     * @param string|null $format
+     * @return bool
+     */
+    public function supportsNormalization($data, $format = null)
     {
         return $data instanceof NewPaymentInterface;
     }
