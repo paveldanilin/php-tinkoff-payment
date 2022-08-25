@@ -74,6 +74,15 @@ final class ReceiptBuilderFFD105 implements ReceiptBuilderInterface
         return $this;
     }
 
+    public function items(iterable $items): self
+    {
+        $this->items = [];
+        foreach ($items as $item) {
+            $this->addItem($item);
+        }
+        return $this;
+    }
+
     public function build(): AbstractReceipt
     {
         if (empty($this->phone) && empty($this->email)) {
