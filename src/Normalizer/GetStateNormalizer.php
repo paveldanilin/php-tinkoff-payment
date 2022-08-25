@@ -9,7 +9,13 @@ final class GetStateNormalizer implements NormalizerInterface
 {
     use SetterTrait;
 
-    public function normalize($object, string $format = null, array $context = []): array
+    /**
+     * @param mixed $object
+     * @param string|null $format
+     * @param array $context
+     * @return array
+     */
+    public function normalize($object, $format = null, array $context = [])
     {
         /** @var GetStateInterface $state */
         $state = $object;
@@ -25,7 +31,12 @@ final class GetStateNormalizer implements NormalizerInterface
         return $data;
     }
 
-    public function supportsNormalization($data, string $format = null): bool
+    /**
+     * @param mixed $data
+     * @param string|null $format
+     * @return bool
+     */
+    public function supportsNormalization($data, $format = null)
     {
         return $data instanceof GetStateInterface;
     }

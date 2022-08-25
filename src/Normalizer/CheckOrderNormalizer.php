@@ -12,7 +12,13 @@ final class CheckOrderNormalizer implements NormalizerInterface, DenormalizerInt
 {
     // NORMALIZE
 
-    public function normalize($object, string $format = null, array $context = []): array
+    /**
+     * @param mixed $object
+     * @param string|null $format
+     * @param array $context
+     * @return array
+     */
+    public function normalize($object, $format = null, array $context = [])
     {
         /** @var CheckOrderInterface $checkOrder */
         $checkOrder = $object;
@@ -24,14 +30,26 @@ final class CheckOrderNormalizer implements NormalizerInterface, DenormalizerInt
         ];
     }
 
-    public function supportsNormalization($data, string $format = null): bool
+    /**
+     * @param mixed $data
+     * @param string|null $format
+     * @return bool
+     */
+    public function supportsNormalization($data, $format = null)
     {
         return $data instanceof CheckOrderInterface;
     }
 
     // DENORMALIZE
 
-    public function denormalize($data, string $type, string $format = null, array $context = []): CheckOrderResult
+    /**
+     * @param mixed $data
+     * @param string $type
+     * @param string|null $format
+     * @param array $context
+     * @return CheckOrderResult
+     */
+    public function denormalize($data, $type, $format = null, array $context = [])
     {
         $checkOrderResponse = new CheckOrderResult();
 
@@ -59,7 +77,13 @@ final class CheckOrderNormalizer implements NormalizerInterface, DenormalizerInt
         return $checkOrderResponse;
     }
 
-    public function supportsDenormalization($data, string $type, string $format = null): bool
+    /**
+     * @param mixed $data
+     * @param string $type
+     * @param string|null $format
+     * @return bool
+     */
+    public function supportsDenormalization($data, $type, $format = null)
     {
         return CheckOrderResult::class === $type;
     }
