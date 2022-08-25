@@ -4,9 +4,9 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Pada\Tinkoff\Payment\Configuration;
 use Pada\Tinkoff\Payment\PaymentClient;
-use Pada\Tinkoff\Payment\PaymentClientInterface;
 use Pada\Tinkoff\Payment\Contract\NewPaymentResultInterface;
 use Psr\Log\LogLevel;
+use RestClient\Interceptor\LogRequestInterceptor;
 use function Pada\Tinkoff\Payment\Functions\newPayment;
 use function Pada\Tinkoff\Payment\Functions\newReceipt;
 use function Pada\Tinkoff\Payment\Functions\newReceiptItem;
@@ -20,7 +20,7 @@ $config = new Configuration();
 $config->setTerminalKey('<terminal_key>');
 $config->setPassword('<password>');
 
-/** @var PaymentClientInterface $paymentClient */
+/** @var PaymentClient $paymentClient */
 $paymentClient = new PaymentClient($config);
 
 
@@ -30,7 +30,7 @@ $logger = new Logger('payment');
 // Now add some handlers
 $logger->pushHandler(new StreamHandler('payment.log', LogLevel::DEBUG));
 
-$paymentClient->setLogger($logger);
+$paymentClient->pushInterceptor(new LogRequestInterceptor($logger));
 
 
 // ------------------------------------------------------------------------------------------------

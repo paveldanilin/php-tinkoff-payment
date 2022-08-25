@@ -9,9 +9,8 @@ use Pada\Tinkoff\Payment\Contract\NewPaymentInterface;
 use Pada\Tinkoff\Payment\Contract\NewPaymentResultInterface;
 use Pada\Tinkoff\Payment\Contract\ReceiptInterface;
 use Pada\Tinkoff\Payment\Contract\ResendResultInterface;
-use Psr\Log\LoggerAwareInterface;
 
-interface PaymentClientInterface extends LoggerAwareInterface
+interface PaymentClientInterface
 {
     public function init(NewPaymentInterface $newPayment): NewPaymentResultInterface;
     public function cancel(int $paymentId, ?int $amount = null, ?string $ip = null): CancelResultInterface;
