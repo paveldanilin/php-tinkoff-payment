@@ -10,8 +10,17 @@ use RestClient\ContextInterface;
 use RestClient\Interceptor\RequestInterceptorInterface;
 use RestClient\RequestExecutionInterface;
 
+/**
+ * @see https://www.tinkoff.ru/kassa/develop/api/request-sign/
+ */
 final class TokenInterceptor implements RequestInterceptorInterface
 {
+    /**
+     * @see https://www.tinkoff.ru/kassa/develop/api/request-sign/
+     * Для этого соберем массив всех параметров (кроме объектов Shops, Receipt, DATA) в формате пар "ключ":"значение":
+     */
+    private const EXCLUDE_FIELDS = ['shops', 'receipt', 'data'];
+
     private string $password;
 
     public function __construct(string $password)
@@ -31,8 +40,6 @@ final class TokenInterceptor implements RequestInterceptorInterface
     }
 
     /**
-     * @see https://www.tinkoff.ru/kassa/develop/api/request-sign/
-     *
      * @param object $payload
      * @return string
      */
@@ -41,7 +48,7 @@ final class TokenInterceptor implements RequestInterceptorInterface
         $data = ObjectUtil::toArray(
             $payload,
             false,
-            ['shops', 'receipt', 'data'],
+            self::EXCLUDE_FIELDS,
             static fn(string $k) => \ucfirst($k),
             static fn(string $k, $v) => null !== $v,
         );

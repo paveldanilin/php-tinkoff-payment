@@ -6,7 +6,6 @@ use Pada\Tinkoff\Payment\Constant;
 use Pada\Tinkoff\Payment\Contract\NewPaymentInterface;
 use Pada\Tinkoff\Payment\Contract\ReceiptInterface;
 use Pada\Tinkoff\Payment\DataKV;
-use Pada\Tinkoff\Payment\Model\CheckOrder\Payment;
 use Pada\Tinkoff\Payment\Model\Receipt\AbstractItem;
 
 final class PaymentBuilder implements PaymentBuilderInterface
@@ -24,6 +23,10 @@ final class PaymentBuilder implements PaymentBuilderInterface
     private ?ReceiptInterface $receipt = null;
     private bool $isRecurrent = false;
     private ?string $customerKey = null;
+    /**
+     * Временная метка по стандарту ISO8601 в формате YYYY-MM-DDThh:mm:ss±hh:mm
+     * @var \DateTime|null
+     */
     private ?\DateTime $redirectDueDate = null;
 
 
@@ -106,7 +109,7 @@ final class PaymentBuilder implements PaymentBuilderInterface
         return $this;
     }
 
-    public function date(?DataKV $dataKV): self
+    public function data(?DataKV $dataKV): self
     {
         $this->data = $dataKV;
         return $this;

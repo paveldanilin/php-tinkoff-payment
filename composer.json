@@ -4,27 +4,36 @@
 	"keywords": ["Tinkoff", "pay", "payment", "kassa"],
     "type": "library",
     "license": "MIT",
+	"authors": [
+		{
+			"name": "Pavel",
+			"email": "pavel.k.danilin@gmail.com"
+		}
+	],
     "autoload": {
         "psr-4": {
             "Pada\\Tinkoff\\Payment\\": "src/"
         },
 		"files": ["src/functions.php"]
     },
-    "authors": [
-        {
-            "name": "Pavel",
-            "email": "pavel.k.danilin@gmail.com"
-        }
-    ],
+	"autoload-dev": {
+		"psr-4": {
+			"Pada\\Tinkoff\\Tests\\": "tests"
+		}
+	},
     "require": {
         "php": ">=7.4.0",
 		"paveldanilin/rest-client": "1.2.7"
     },
 	"require-dev": {
 		"phpstan/phpstan": "0.12.99",
+		"phpunit/phpunit": "9.5.*",
 		"monolog/monolog": "2.8.0"
 	},
 	"scripts": {
-		"test": "php -d memory_limit=4G ./vendor/bin/phpstan analyse -c phpstan.neon"
+		"test": [
+			"php -d memory_limit=4G ./vendor/bin/phpstan analyse -c phpstan.neon",
+			"php ./vendor/bin/phpunit"
+		]
 	}
 }
