@@ -41,9 +41,17 @@ final class ObjectUtil {
             if ($recursively && \is_object($v)) {
                 $result[$k] = self::toArray($v, $recursively);
             } else {
+                if ($v instanceof \DateTime) {
+                    $v = self::toISO8601($v);
+                }
                 $result[$k] = $v;
             }
         }
         return $result;
+    }
+
+    private static function toISO8601(\DateTime $dateTime): string
+    {
+        return $dateTime->format(\DateTime::ATOM);
     }
 }

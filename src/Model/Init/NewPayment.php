@@ -22,6 +22,10 @@ final class NewPayment extends AbstractRequest implements NewPaymentInterface
     private ?ReceiptInterface $receipt = null;
     private bool $isRecurrent = false;
     private ?string $customerKey = null;
+    /**
+     * Временная метка по стандарту ISO8601 в формате YYYY-MM-DDThh:mm:ss±hh:mm
+     * @var \DateTime|null
+     */
     private ?\DateTime $redirectDueDate = null;
 
 
