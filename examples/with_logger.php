@@ -14,7 +14,7 @@ use function Pada\Tinkoff\Payment\Functions\newReceiptItem;
 require 'vendor/autoload.php';
 
 // ------------------------------------------------------------------------------------------------
-// 1 - Create Payment client
+// 1 - Создание клиента
 
 $config = new Configuration();
 $config->setTerminalKey('<terminal_key>');
@@ -25,7 +25,7 @@ $paymentClient = new PaymentClient($config);
 
 
 // ------------------------------------------------------------------------------------------------
-// 2 - Init logger
+// 2 - Создаем логгер
 $logger = new Logger('payment');
 // Now add some handlers
 $logger->pushHandler(new StreamHandler('payment.log', LogLevel::DEBUG));
@@ -34,7 +34,7 @@ $paymentClient->pushInterceptor(new LogRequestInterceptor($logger));
 
 
 // ------------------------------------------------------------------------------------------------
-// 3 - Create New payment model
+// 3 - Вызываем API
 
 $newPayment = newPayment()
     ->amount(100)
@@ -59,9 +59,7 @@ $newPayment = newPayment()
 $result = $paymentClient->init($newPayment);
 
 if ($result->isSuccess()) {
-    // Do some logic
     print 'PaymentId: ' . $result->getPaymentId() . "\n";
 } else {
-    // Process error
     print 'Error: ' . $result->getMessage() . "\n";
 }

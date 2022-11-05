@@ -7,14 +7,14 @@ use Pada\Tinkoff\Payment\Model\AbstractRequest;
 
 final class CheckOrder extends AbstractRequest implements CheckOrderInterface
 {
-    private int $orderId = 0;
+    private string $orderId = '';
 
-    public function getOrderId(): int
+    public function getOrderId(): string
     {
         return $this->orderId;
     }
 
-    public function setOrderId(int $orderId): void
+    public function setOrderId(string $orderId): void
     {
         $this->orderId = $orderId;
     }

@@ -16,6 +16,6 @@ interface PaymentClientInterface
     public function cancel(int $paymentId, ?int $amount = null, ?string $ip = null): CancelResultInterface;
     public function cancelWithReceipt(int $paymentId, ReceiptInterface $receipt, ?string $ip = null): CancelResultInterface;
     public function getState(int $paymentId, ?string $ip = null): GetStateResultInterface;
-    public function checkOrder(int $orderId): CheckOrderResultInterface;
+    public function checkOrder(string $orderId): CheckOrderResultInterface;
     public function resendNotifications(): ResendResultInterface;
 }

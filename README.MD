@@ -2,6 +2,11 @@
 
 Клиент для проведения платежей [API Тинькофф Платежи](https://www.tinkoff.ru/kassa/develop/api/payments/).
 
+## Установка
+
+```sh
+composer require paveldanilin/php-tinkoff-payment
+```
 
 ## Примеры
 
@@ -33,11 +38,9 @@ $payment = newPayment()
 $result = $paymentClient->init($payment);
 
 if ($result->isSuccess()) {
-    // Do some logic
     print 'PaymentId: ' . $result->getPaymentId() . "\n";
     print 'PaymentURL: ' . $result->getPaymentURL() . "\n";
 } else {
-    // Process error
     print 'Error: ' . $result->getMessage() . "\n";
 }
 ```
@@ -66,11 +69,9 @@ $payment = newPayment()
 $result = $paymentClient->init($payment);
 
 if ($result->isSuccess()) {
-    // Do some logic
     print 'PaymentId: ' . $result->getPaymentId() . "\n";
     print 'PaymentURL: ' . $result->getPaymentURL() . "\n";
 } else {
-    // Process error
     print 'Error: ' . $result->getMessage() . "\n";
 }
 ```
@@ -86,10 +87,8 @@ if ($result->isSuccess()) {
 $result = $paymentClient->cancel(1645861116);
 
 if ($result->isSuccess()) {
-    // Do some logic
     print 'PaymentId: ' . $result->getPaymentId() . ' [' . $result->getStatus() . "]\n";
 } else {
-    // Process error
     print 'Error: ' . $result->getMessage() . "\n";
 }
 ```
@@ -105,10 +104,8 @@ if ($result->isSuccess()) {
 $result = $paymentClient->getState(1645861116);
 
 if ($result->isSuccess()) {
-    // Do some logic
     print 'PaymentId: ' . $result->getPaymentId() . ' [' . $result->getStatus() . "]\n";
 } else {
-    // Process error
     print 'Error: ' . $result->getMessage() . "\n";
 }
 ```
@@ -121,10 +118,9 @@ if ($result->isSuccess()) {
 
 ```php
 /** @var CheckOrderResultInterface $result */
-$result = $paymentClient->checkOrder(333335556669);
+$result = $paymentClient->checkOrder('333335556669');
 
 if ($result->isSuccess()) {
-    // Do some logic
     print 'OrderID: ' . $result->getOrderId() . "\n";
     print '-----' . "\n";
     foreach ($result->getPayments() as $payment) {
@@ -135,7 +131,6 @@ if ($result->isSuccess()) {
         print '=====' . "\n";
     }
 } else {
-    // Process error
     print 'Error: ' . $result->getMessage() . "\n";
 }
 ```
@@ -151,10 +146,14 @@ if ($result->isSuccess()) {
 $result = $paymentClient->resendNotifications();
 
 if ($result->isSuccess()) {
-    // Do some logic
     print 'Count: ' . $result->getCount() . "\n";
 } else {
-    // Process error
     print 'Error: ' . $result->getMessage() . "\n";
 }
+```
+
+## Запуск тестов
+
+```sh
+composer test
 ```

@@ -8,7 +8,7 @@ use Pada\Tinkoff\Payment\Contract\CheckOrderResultInterface;
 require 'vendor/autoload.php';
 
 // ------------------------------------------------------------------------------------------------
-// 1 - Create Payment client
+// 1 - Создание клиента
 
 $config = new Configuration();
 $config->setTerminalKey('<terminal_key>');
@@ -19,13 +19,12 @@ $paymentClient = new PaymentClient($config);
 
 
 // ------------------------------------------------------------------------------------------------
-// 2 - Invoke API and process response
+// 2 -  Вызываем API
 
 /** @var CheckOrderResultInterface $result */
 $result = $paymentClient->checkOrder(1234567890);
 
 if ($result->isSuccess()) {
-    // Do some logic
     print 'OrderID: ' . $result->getOrderId() . "\n";
     print '-----' . "\n";
     foreach ($result->getPayments() as $payment) {
@@ -36,6 +35,5 @@ if ($result->isSuccess()) {
         print '=====' . "\n";
     }
 } else {
-    // Process error
     print 'Error: ' . $result->getMessage() . "\n";
 }

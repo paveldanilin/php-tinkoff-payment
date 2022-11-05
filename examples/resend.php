@@ -8,7 +8,7 @@ use Pada\Tinkoff\Payment\Contract\ResendResultInterface;
 require 'vendor/autoload.php';
 
 // ------------------------------------------------------------------------------------------------
-// 1 - Create Payment client
+// 1 - Создание клиента
 
 $config = new Configuration();
 $config->setTerminalKey('<terminal_key>');
@@ -19,15 +19,13 @@ $paymentClient = new PaymentClient($config);
 
 
 // ------------------------------------------------------------------------------------------------
-// 2 - Invoke API and process response
+// 2 - Вызываем API
 
 /** @var ResendResultInterface $result */
 $result = $paymentClient->resendNotifications();
 
 if ($result->isSuccess()) {
-    // Do some logic
     print 'Count: ' . $result->getCount() . "\n";
 } else {
-    // Process error
     print 'Error: ' . $result->getMessage() . "\n";
 }

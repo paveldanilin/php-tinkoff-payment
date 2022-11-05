@@ -107,10 +107,10 @@ class PaymentClient extends DefaultJsonRestClient implements PaymentClientInterf
     /**
      * @see https://www.tinkoff.ru/kassa/develop/api/payments/checkorder-description/
      *
-     * @param int $orderId
+     * @param string $orderId
      * @return CheckOrderResultInterface
      */
-    public function checkOrder(int $orderId): CheckOrderResultInterface
+    public function checkOrder(string $orderId): CheckOrderResultInterface
     {
         $checkOrder = new Model\CheckOrder\CheckOrder();
         $checkOrder->setOrderId($orderId);
