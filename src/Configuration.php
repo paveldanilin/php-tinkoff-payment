@@ -11,7 +11,7 @@ final class Configuration extends DefaultConfiguration
 
     public function __construct()
     {
-        $this->setBaseUri('https://securepay.tinkoff.ru');
+        $this->setBaseUri(Constant::PAY_BASE_URI);
     }
 
     public function getTerminalKey(): string

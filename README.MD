@@ -13,12 +13,8 @@ composer require paveldanilin/php-tinkoff-payment
 ### Создание клиента
 
 ```php
-$config = new Configuration();
-$config->setTerminalKey('<terminal_key>');
-$config->setPassword('<password>');
-
 /** @var PaymentClientInterface $paymentClient */
-$paymentClient = new PaymentClient($config);
+$paymentClient = PaymentClient::create('<terminal_key>', '<password>');
 ```
 
 ### Создание платежа

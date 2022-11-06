@@ -4,6 +4,8 @@ namespace Pada\Tinkoff\Payment;
 
 abstract class Constant
 {
+    public const PAY_BASE_URI = 'https://securepay.tinkoff.ru';
+
     // PAYMENT STATUS
 
     // Создан

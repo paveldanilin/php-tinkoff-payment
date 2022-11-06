@@ -9,6 +9,7 @@ use Pada\Tinkoff\Payment\Contract\NewPaymentInterface;
 use Pada\Tinkoff\Payment\Contract\NewPaymentResultInterface;
 use Pada\Tinkoff\Payment\Contract\ReceiptInterface;
 use Pada\Tinkoff\Payment\Contract\ResendResultInterface;
+use Pada\Tinkoff\Payment\Exception\ResponseDecodeException;
 use Pada\Tinkoff\Payment\Interceptor\TerminalKeyInterceptor;
 use Pada\Tinkoff\Payment\Interceptor\TokenInterceptor;
 use Pada\Tinkoff\Payment\Model\Cancel\CancelResult;
@@ -33,16 +34,29 @@ class PaymentClient extends DefaultJsonRestClient implements PaymentClientInterf
         $this->setInterceptors($this->getClientInterceptors());
     }
 
+    public static function create(string $terminalKey, string $password, string $baseUri = Constant::PAY_BASE_URI): PaymentClientInterface
+    {
+        $config = new Configuration();
+        $config->setTerminalKey($terminalKey);
+        $config->setPassword($password);
+        $config->setBaseUri($baseUri);
+        return new self($config);
+    }
+
     /**
      * @see https://www.tinkoff.ru/kassa/develop/api/payments/init-description/
      *
      * @param NewPaymentInterface $newPayment
+     * @throws ResponseDecodeException
      * @return NewPaymentResultInterface
      */
     public function init(NewPaymentInterface $newPayment): NewPaymentResultInterface
     {
         /** @var NewPaymentResult|null $result */
         $result = $this->postForObject('/v2/Init', NewPaymentResult::class, $newPayment);
+        if (null === $result) {
+            throw new ResponseDecodeException();
+        }
         return $result;
     }
 
@@ -52,6 +66,7 @@ class PaymentClient extends DefaultJsonRestClient implements PaymentClientInterf
      * @param int $paymentId
      * @param int|null $amount
      * @param string|null $ip
+     * @throws ResponseDecodeException
      * @return CancelResultInterface
      */
     public function cancel(int $paymentId, ?int $amount = null, ?string $ip = null): CancelResultInterface
@@ -63,6 +78,9 @@ class PaymentClient extends DefaultJsonRestClient implements PaymentClientInterf
 
         /** @var CancelResult|null $result */
         $result = $this->postForObject('/v2/Cancel', CancelResult::class, $cancelPayment);
+        if (null === $result) {
+            throw new ResponseDecodeException();
+        }
         return $result;
     }
 
@@ -72,6 +90,7 @@ class PaymentClient extends DefaultJsonRestClient implements PaymentClientInterf
      * @param int $paymentId
      * @param ReceiptInterface $receipt
      * @param string|null $ip
+     * @throws ResponseDecodeException
      * @return CancelResultInterface
      */
     public function cancelWithReceipt(int $paymentId, ReceiptInterface $receipt, ?string $ip = null): CancelResultInterface
@@ -83,6 +102,9 @@ class PaymentClient extends DefaultJsonRestClient implements PaymentClientInterf
 
         /** @var CancelResult|null $result */
         $result = $this->postForObject('/v2/Cancel', CancelResult::class, $cancelPayment);
+        if (null === $result) {
+            throw new ResponseDecodeException();
+        }
         return $result;
     }
 
@@ -91,6 +113,7 @@ class PaymentClient extends DefaultJsonRestClient implements PaymentClientInterf
      *
      * @param int $paymentId
      * @param string|null $ip
+     * @throws ResponseDecodeException
      * @return GetStateResultInterface
      */
     public function getState(int $paymentId, ?string $ip = null): GetStateResultInterface
@@ -101,6 +124,9 @@ class PaymentClient extends DefaultJsonRestClient implements PaymentClientInterf
 
         /** @var GetStateResult|null $result */
         $result = $this->postForObject('/v2/GetState', GetStateResult::class, $getState);
+        if (null === $result) {
+            throw new ResponseDecodeException();
+        }
         return $result;
     }
 
@@ -108,6 +134,7 @@ class PaymentClient extends DefaultJsonRestClient implements PaymentClientInterf
      * @see https://www.tinkoff.ru/kassa/develop/api/payments/checkorder-description/
      *
      * @param string $orderId
+     * @throws ResponseDecodeException
      * @return CheckOrderResultInterface
      */
     public function checkOrder(string $orderId): CheckOrderResultInterface
@@ -117,18 +144,25 @@ class PaymentClient extends DefaultJsonRestClient implements PaymentClientInterf
 
         /** @var CheckOrderResult|null $result */
         $result = $this->postForObject('/v2/CheckOrder', CheckOrderResult::class, $checkOrder);
+        if (null === $result) {
+            throw new ResponseDecodeException();
+        }
         return $result;
     }
 
     /**
      * @see https://www.tinkoff.ru/kassa/develop/api/payments/resend-description/
      *
+     * @throws ResponseDecodeException
      * @return ResendResultInterface
      */
     public function resendNotifications(): ResendResultInterface
     {
         /** @var ResendResult|null $result */
         $result = $this->postForObject('/v2/Resend', ResendResult::class, new Resend());
+        if (null === $result) {
+            throw new ResponseDecodeException();
+        }
         return $result;
     }
 

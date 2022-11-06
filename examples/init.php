@@ -1,9 +1,6 @@
 <?php
 
-use Pada\Tinkoff\Payment\Configuration;
 use Pada\Tinkoff\Payment\PaymentClient;
-use Pada\Tinkoff\Payment\PaymentClientInterface;
-use Pada\Tinkoff\Payment\Contract\NewPaymentResultInterface;
 use function Pada\Tinkoff\Payment\Functions\newPayment;
 use function Pada\Tinkoff\Payment\Functions\newReceipt;
 use function Pada\Tinkoff\Payment\Functions\newReceiptItem;
@@ -13,12 +10,7 @@ require 'vendor/autoload.php';
 // ------------------------------------------------------------------------------------------------
 // 1 - Создание клиента
 
-$config = new Configuration();
-$config->setTerminalKey('<terminal_key>');
-$config->setPassword('<password>');
-
-/** @var PaymentClientInterface $paymentClient */
-$paymentClient = new PaymentClient($config);
+$paymentClient = PaymentClient::create('<terminal_key>', '<password>');
 
 
 // ------------------------------------------------------------------------------------------------
@@ -43,7 +35,6 @@ $payment = newPayment()
 // ------------------------------------------------------------------------------------------------
 // 3 - Вызываем API
 
-/** @var NewPaymentResultInterface $result */
 $result = $paymentClient->init($payment);
 
 if ($result->isSuccess()) {
