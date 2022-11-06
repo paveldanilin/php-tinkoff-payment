@@ -3,6 +3,8 @@
 namespace Pada\Tinkoff\Payment;
 
 use Pada\Tinkoff\Payment\Contract\CancelResultInterface;
+use Pada\Tinkoff\Payment\Contract\ChargeInterface;
+use Pada\Tinkoff\Payment\Contract\ChargeResultInterface;
 use Pada\Tinkoff\Payment\Contract\CheckOrderResultInterface;
 use Pada\Tinkoff\Payment\Contract\GetStateResultInterface;
 use Pada\Tinkoff\Payment\Contract\NewPaymentInterface;
@@ -13,6 +15,7 @@ use Pada\Tinkoff\Payment\Exception\ResponseDecodeException;
 use Pada\Tinkoff\Payment\Interceptor\TerminalKeyInterceptor;
 use Pada\Tinkoff\Payment\Interceptor\TokenInterceptor;
 use Pada\Tinkoff\Payment\Model\Cancel\CancelResult;
+use Pada\Tinkoff\Payment\Model\Charge\ChargeResult;
 use Pada\Tinkoff\Payment\Model\CheckOrder\CheckOrderResult;
 use Pada\Tinkoff\Payment\Model\GetState\GetStateResult;
 use Pada\Tinkoff\Payment\Model\Init\NewPaymentResult;
@@ -160,6 +163,22 @@ class PaymentClient extends DefaultJsonRestClient implements PaymentClientInterf
     {
         /** @var ResendResult|null $result */
         $result = $this->postForObject('/v2/Resend', ResendResult::class, new Resend());
+        if (null === $result) {
+            throw new ResponseDecodeException();
+        }
+        return $result;
+    }
+
+    /**
+     * @see https://www.tinkoff.ru/kassa/develop/api/autopayments/charge-description/
+     *
+     * @param ChargeInterface $charge
+     * @return ChargeResultInterface
+     */
+    public function charge(ChargeInterface $charge): ChargeResultInterface
+    {
+        /** @var ChargeResultInterface|null $result */
+        $result = $this->postForObject('/v2/Charge', ChargeResult::class, $charge);
         if (null === $result) {
             throw new ResponseDecodeException();
         }

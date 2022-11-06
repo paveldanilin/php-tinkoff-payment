@@ -3,6 +3,8 @@
 namespace Pada\Tinkoff\Payment;
 
 use Pada\Tinkoff\Payment\Contract\CancelResultInterface;
+use Pada\Tinkoff\Payment\Contract\ChargeInterface;
+use Pada\Tinkoff\Payment\Contract\ChargeResultInterface;
 use Pada\Tinkoff\Payment\Contract\CheckOrderResultInterface;
 use Pada\Tinkoff\Payment\Contract\GetStateResultInterface;
 use Pada\Tinkoff\Payment\Contract\NewPaymentInterface;
@@ -70,4 +72,22 @@ interface PaymentClientInterface
      * @return ResendResultInterface
      */
     public function resendNotifications(): ResendResultInterface;
+
+    /**
+     * @see https://www.tinkoff.ru/kassa/develop/api/autopayments/charge-description/
+     *
+     * Метод осуществляет автоплатеж.
+     * Всегда работает по типу одностадийной оплаты:
+     * во время выполнения метода на Notification URL будет отправлен синхронный запрос,
+     * на который требуется корректный ответ.
+     *
+     * Вызовите метод Init со стандартным набором параметров (параметр Recurrent передавать не нужно)
+     * Получите в ответ на Init параметр PaymentID
+     * Вызовите метод Charge с параметрами RebillID и PaymentID
+     *
+     * @param ChargeInterface $charge
+     * @throws ResponseDecodeException
+     * @return ChargeResultInterface
+     */
+    public function charge(ChargeInterface $charge): ChargeResultInterface;
 }
