@@ -6,13 +6,45 @@ use Pada\Tinkoff\Payment\Constant;
 use Pada\Tinkoff\Payment\Contract\NewPaymentResultInterface;
 use Pada\Tinkoff\Payment\Model\AbstractResult;
 
+/**
+ * @see https://www.tinkoff.ru/kassa/develop/api/payments/init-response/
+ */
 final class NewPaymentResult extends AbstractResult implements NewPaymentResultInterface
 {
+    /**
+     * Идентификатор терминала. Выдается продавцу банком при заведении терминала
+     * @var string
+     */
     private string $terminalKey = '';
+
+    /**
+     * Сумма в копейках
+     * @var int
+     */
     private int $amount = 0;
+
+    /**
+     * Идентификатор заказа в системе продавца
+     * @var string
+     */
     private string $orderId = '';
+
+    /**
+     * Идентификатор платежа в системе банка
+     * @var int
+     */
     private int $paymentId = 0;
+
+    /**
+     * Ссылка на платежную форму
+     * @var string|null
+     */
     private ?string $paymentURL = null;
+
+    /**
+     * Статус платежа
+     * @var string|null
+     */
     private ?string $status = null;
 
 

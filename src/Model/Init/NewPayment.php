@@ -7,21 +7,103 @@ use Pada\Tinkoff\Payment\Contract\ReceiptInterface;
 use Pada\Tinkoff\Payment\DataKV;
 use Pada\Tinkoff\Payment\Model\AbstractRequest;
 
+/**
+ * @see https://www.tinkoff.ru/kassa/develop/api/payments/init-request/
+ */
 final class NewPayment extends AbstractRequest implements NewPaymentInterface
 {
+    /**
+     * Сумма в копейках
+     * @var int
+     */
     private int $amount = 0;
+
+    /**
+     * Идентификатор заказа в системе продавца
+     * @var string
+     */
     private string $orderId = '';
+
+    /**
+     * Тип оплаты:
+     *   O — одностадийная
+     *   T — двухстадийная
+     * @var string|null
+     */
     private ?string $payType = null;
+
+    /**
+     * IP-адрес покупателя
+     * @var string|null
+     */
     private ?string $ip = null;
+
+    /**
+     * Описание заказа
+     * @var string|null
+     */
     private ?string $description = null;
+
+    /**
+     * Язык платежной формы:
+     *   ru — русский
+     *   en — английский
+     * Если не передан, форма откроется на русском языке
+     * @var string|null
+     */
     private ?string $language = null;
+
+    /**
+     * Страница успеха
+     * Если не передан, принимает значение, указанное в настройках терминала
+     * @var string|null
+     */
     private ?string $successURL = null;
+
+    /**
+     * Страница ошибки
+     * Если не передан, принимает значение, указанное в настройках терминала
+     * @var string|null
+     */
     private ?string $failURL = null;
+
+    /**
+     * Адрес для получения http нотификаций
+     * Если не передан, принимает значение, указанное в настройках терминала
+     * @var string|null
+     */
     private ?string $notificationURL = null;
+
+    /**
+     * Дополнительные параметры платежа в формате "ключ":"значение" (не более 20 пар).
+     * Наименование самого параметра должно быть в верхнем регистре, иначе его содержимое будет игнорироваться.
+     * @var DataKV|null
+     */
     private ?DataKV $data = null;
+
+    /**
+     * @see https://www.tinkoff.ru/kassa/develop/api/receipt/
+     *
+     * Массив данных чека.
+     * @var ReceiptInterface|null
+     */
     private ?ReceiptInterface $receipt = null;
+
+    /**
+     * Для регистрации автоплатежа
+     * @var bool
+     */
     private bool $isRecurrent = false;
+
+    /**
+     * @see https://www.tinkoff.ru/kassa/develop/api/autopayments/getcardlist-description/
+     *
+     * Идентификатор покупателя в системе продавца. Передается вместе с параметром CardId.
+     * Также необходим для сохранения карт на платежной форме (платежи в один клик).
+     * @var string|null
+     */
     private ?string $customerKey = null;
+
     /**
      * Временная метка по стандарту ISO8601 в формате YYYY-MM-DDThh:mm:ss±hh:mm
      * @var \DateTime|null
