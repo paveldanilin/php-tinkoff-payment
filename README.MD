@@ -148,6 +148,30 @@ if ($result->isSuccess()) {
 }
 ```
 
+
+### Автоплатежи
+
+#### Родительский платеж
+
+Вызовите метод Init с параметрами Recurrent и CustomerKey
+Переадресуйте покупателя на страницу оплаты и дождитесь совершения платежа
+В нотификации AUTHORIZED или CONFIRMED получите и сохраните идентификатор RebillID
+
+[API проведения автоплатежа](https://www.tinkoff.ru/kassa/develop/api/autopayments/charge-description/)
+
+```php
+$charge = new Charge();
+$charge->setPaymentId(10063);
+$charge->setRebillId(1234);
+$result = $paymentClient->charge($charge);
+
+if ($result->isSuccess()) {
+    // Успех
+} else {
+    // Ошибка
+}
+```
+
 ## Запуск тестов
 
 ```sh
