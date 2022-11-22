@@ -6,6 +6,8 @@ use Pada\Tinkoff\Payment\Contract\CancelResultInterface;
 use Pada\Tinkoff\Payment\Contract\ChargeInterface;
 use Pada\Tinkoff\Payment\Contract\ChargeResultInterface;
 use Pada\Tinkoff\Payment\Contract\CheckOrderResultInterface;
+use Pada\Tinkoff\Payment\Contract\ConfirmInterface;
+use Pada\Tinkoff\Payment\Contract\ConfirmResultInterface;
 use Pada\Tinkoff\Payment\Contract\GetStateResultInterface;
 use Pada\Tinkoff\Payment\Contract\NewPaymentInterface;
 use Pada\Tinkoff\Payment\Contract\NewPaymentResultInterface;
@@ -17,12 +19,14 @@ use Pada\Tinkoff\Payment\Interceptor\TokenInterceptor;
 use Pada\Tinkoff\Payment\Model\Cancel\CancelResult;
 use Pada\Tinkoff\Payment\Model\Charge\ChargeResult;
 use Pada\Tinkoff\Payment\Model\CheckOrder\CheckOrderResult;
+use Pada\Tinkoff\Payment\Model\Confirm\ConfirmResult;
 use Pada\Tinkoff\Payment\Model\GetState\GetStateResult;
 use Pada\Tinkoff\Payment\Model\Init\NewPaymentResult;
 use Pada\Tinkoff\Payment\Model\Resend\Resend;
 use Pada\Tinkoff\Payment\Model\Resend\ResendResult;
 use Pada\Tinkoff\Payment\Normalizer\CancelPaymentNormalizer;
 use Pada\Tinkoff\Payment\Normalizer\CheckOrderNormalizer;
+use Pada\Tinkoff\Payment\Normalizer\ConfirmNormalizer;
 use Pada\Tinkoff\Payment\Normalizer\NewPaymentNormalizer;
 use Pada\Tinkoff\Payment\Normalizer\GetStateNormalizer;
 use Pada\Tinkoff\Payment\Normalizer\ResendNormalizer;
@@ -170,6 +174,55 @@ class PaymentClient extends DefaultJsonRestClient implements PaymentClientInterf
     }
 
     /**
+     * @see https://www.tinkoff.ru/kassa/develop/api/payments/confirm-description/
+     *
+     * @param int $paymentId
+     * @param int|null $amount
+     * @param string|null $ip
+     * @return ConfirmResultInterface
+     */
+    public function confirm(int $paymentId, ?int $amount = null, ?string $ip = null): ConfirmResultInterface
+    {
+        $confirm = new Model\Confirm\Confirm();
+        $confirm->setPaymentId($paymentId);
+        $confirm->setAmount($amount);
+        $confirm->setIp($ip);
+
+        /** @var ConfirmResult|null $result */
+        $result = $this->postForObject('/v2/Confirm', ConfirmResult::class, $confirm);
+        if (null === $result) {
+            throw new ResponseDecodeException();
+        }
+        return $result;
+    }
+
+    /**
+     * @see https://www.tinkoff.ru/kassa/develop/api/payments/confirm-description/
+     *
+     * @param int $paymentId
+     * @param ReceiptInterface $receipt
+     * @param int|null $amount
+     * @param string|null $ip
+     *
+     * @return ConfirmResultInterface
+     */
+    public function confirmWithReceipt(int $paymentId, ReceiptInterface $receipt, ?int $amount = null, ?string $ip = null): ConfirmResultInterface
+    {
+        $confirm = new Model\Confirm\Confirm();
+        $confirm->setPaymentId($paymentId);
+        $confirm->setAmount($amount);
+        $confirm->setIp($ip);
+        $confirm->setReceipt($receipt);
+
+        /** @var ConfirmResult|null $result */
+        $result = $this->postForObject('/v2/Confirm', ConfirmResult::class, $confirm);
+        if (null === $result) {
+            throw new ResponseDecodeException();
+        }
+        return $result;
+    }
+
+    /**
      * @see https://www.tinkoff.ru/kassa/develop/api/autopayments/charge-description/
      *
      * @param ChargeInterface $charge
@@ -203,6 +256,7 @@ class PaymentClient extends DefaultJsonRestClient implements PaymentClientInterf
             new GetStateNormalizer(),
             new CheckOrderNormalizer(),
             new ResendNormalizer(),
+            new ConfirmNormalizer(),
         ];
     }
 }

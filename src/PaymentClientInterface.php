@@ -6,6 +6,8 @@ use Pada\Tinkoff\Payment\Contract\CancelResultInterface;
 use Pada\Tinkoff\Payment\Contract\ChargeInterface;
 use Pada\Tinkoff\Payment\Contract\ChargeResultInterface;
 use Pada\Tinkoff\Payment\Contract\CheckOrderResultInterface;
+use Pada\Tinkoff\Payment\Contract\ConfirmInterface;
+use Pada\Tinkoff\Payment\Contract\ConfirmResultInterface;
 use Pada\Tinkoff\Payment\Contract\GetStateResultInterface;
 use Pada\Tinkoff\Payment\Contract\NewPaymentInterface;
 use Pada\Tinkoff\Payment\Contract\NewPaymentResultInterface;
@@ -72,6 +74,35 @@ interface PaymentClientInterface
      * @return ResendResultInterface
      */
     public function resendNotifications(): ResendResultInterface;
+
+    /**
+     * @see https://www.tinkoff.ru/kassa/develop/api/payments/confirm-description/
+     *
+     * Метод подтверждает платеж и списывает ранее заблокированные средства.
+     * Используется при двухстадийной оплате. При одностадийной оплате вызывается автоматически.
+     * Применим к платежу только в статусе AUTHORIZED и только один раз.
+     * Сумма подтверждения не может быть больше заблокированной.
+     * Если сумма подтверждения меньше заблокированной, будет выполнено частичное подтверждение.
+     *
+     * @param int $paymentId
+     * @param int|null $amount
+     * @param string|null $ip
+     * @return ConfirmResultInterface
+     */
+    public function confirm(int $paymentId, ?int $amount = null, ?string $ip = null): ConfirmResultInterface;
+
+    /**
+     * @see https://www.tinkoff.ru/kassa/develop/api/payments/confirm-description/
+     *
+     * @param int $paymentId
+     * @param ReceiptInterface $receipt
+     * @param int|null $amount
+     * @param string|null $ip
+     * @return ConfirmResultInterface
+     */
+    public function confirmWithReceipt(int $paymentId, ReceiptInterface $receipt, ?int $amount = null, ?string $ip = null): ConfirmResultInterface;
+
+    // TODO: разделить интерфейсы payment/autopayment
 
     /**
      * @see https://www.tinkoff.ru/kassa/develop/api/autopayments/charge-description/

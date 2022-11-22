@@ -8,6 +8,18 @@
 composer require paveldanilin/php-tinkoff-payment
 ```
 
+## Реализованные API
+#### Платежи
+- [Создадин платежа](https://www.tinkoff.ru/kassa/develop/api/payments/init-description/)
+- [Отмена платежа](https://www.tinkoff.ru/kassa/develop/api/payments/cancel-description/)
+- [Получение статуса платежа](https://www.tinkoff.ru/kassa/develop/api/payments/getstate-description/)
+- [Получения статуса заказа](https://www.tinkoff.ru/kassa/develop/api/payments/checkorder-description/)
+- [Повторить неуспешные нотификации](https://www.tinkoff.ru/kassa/develop/api/payments/resend-description/)
+- [Подтверждение платежа](https://www.tinkoff.ru/kassa/develop/api/payments/confirm-description/)
+
+#### Автоплатежи
+- [Автоплатеж](https://www.tinkoff.ru/kassa/develop/api/autopayments/charge-description/)
+
 ## Примеры
 
 ### Создание клиента
