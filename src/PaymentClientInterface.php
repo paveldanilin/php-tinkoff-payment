@@ -112,9 +112,9 @@ interface PaymentClientInterface
      * во время выполнения метода на Notification URL будет отправлен синхронный запрос,
      * на который требуется корректный ответ.
      *
-     * Вызовите метод Init со стандартным набором параметров (параметр Recurrent передавать не нужно)
-     * Получите в ответ на Init параметр PaymentID
-     * Вызовите метод Charge с параметрами RebillID и PaymentID
+     * 1. Вызовите метод Init со стандартным набором параметров (параметр Recurrent передавать не нужно)
+     * 2. Получите в ответ на Init параметр PaymentID
+     * 3. Вызовите метод Charge с параметрами RebillID и PaymentID
      *
      * @param ChargeInterface $charge
      * @throws ResponseDecodeException
