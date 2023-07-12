@@ -24,6 +24,7 @@ use Pada\Tinkoff\Payment\Model\Init\NewPaymentResult;
 use Pada\Tinkoff\Payment\Model\Resend\Resend;
 use Pada\Tinkoff\Payment\Model\Resend\ResendResult;
 use Pada\Tinkoff\Payment\Normalizer\CancelPaymentNormalizer;
+use Pada\Tinkoff\Payment\Normalizer\ChargeNormalizer;
 use Pada\Tinkoff\Payment\Normalizer\CheckOrderNormalizer;
 use Pada\Tinkoff\Payment\Normalizer\ConfirmNormalizer;
 use Pada\Tinkoff\Payment\Normalizer\NewPaymentNormalizer;
@@ -256,6 +257,7 @@ class PaymentClient extends DefaultJsonRestClient implements PaymentClientInterf
             new CheckOrderNormalizer(),
             new ResendNormalizer(),
             new ConfirmNormalizer(),
+            new ChargeNormalizer(),
         ];
     }
 }
