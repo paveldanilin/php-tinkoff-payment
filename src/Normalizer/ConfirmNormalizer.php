@@ -10,7 +10,7 @@ final class ConfirmNormalizer implements NormalizerInterface
     use SetterTrait;
     use ReceiptNormalizerTrait;
 
-    public function normalize($object, string $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = [])
     {
         /** @var ConfirmInterface $confirm */
         $confirm = $object;

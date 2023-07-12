@@ -9,7 +9,7 @@ final class ChargeNormalizer implements NormalizerInterface
 {
     // NORMALIZE
 
-    public function normalize($object, string $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = [])
     {
         /** @var ChargeInterface $charge */
         $charge = $object;
