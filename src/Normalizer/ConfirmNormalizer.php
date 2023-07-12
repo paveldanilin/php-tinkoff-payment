@@ -33,7 +33,7 @@ final class ConfirmNormalizer implements NormalizerInterface
         return $data;
     }
 
-    public function supportsNormalization($data, string $format = null)
+    public function supportsNormalization($data, $format = null)
     {
         return $data instanceof ConfirmInterface;
     }
