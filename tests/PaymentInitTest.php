@@ -3,6 +3,7 @@
 namespace Pada\Tinkoff\Tests;
 
 use Pada\Tinkoff\Payment\Configuration;
+use Pada\Tinkoff\Payment\Constant;
 use Pada\Tinkoff\Payment\PaymentClient;
 use Pada\Tinkoff\Payment\PaymentClientInterface;
 use PHPUnit\Framework\TestCase;
@@ -50,6 +51,8 @@ class PaymentInitTest extends TestCase
                     ->price(1000)
                     ->quantity(1)
                     ->taxNone()
+                    ->paymentObject(Constant::PAYMENT_OBJECT_COMMODITY)
+                    ->paymentMethod(Constant::PAYMENT_METHOD_FULL)
                     ->build())
                 ->build())
             ->build();

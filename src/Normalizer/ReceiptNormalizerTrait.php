@@ -26,13 +26,19 @@ trait ReceiptNormalizerTrait
         $this->setIfNotNull('Taxation', $receipt->getTaxation(), $data);
         $data['Items'] = [];
         foreach ($receipt->getItems() as $item) {
-            $data['Items'][] = [
+            $itemData = [
                 'Name' => $item->getName(),
                 'Amount' => $item->getAmount(),
                 'Price' => $item->getPrice(),
                 'Quantity' => $item->getQuantity(),
                 'Tax' => $item->getTax(),
             ];
+
+            $this->setIfNotNull('PaymentMethod', $item->getPaymentMethod(), $itemData);
+            $this->setIfNotNull('PaymentObject', $item->getPaymentObject(), $itemData);
+            $this->setIfNotNull('Ean13', $item->getEan13(), $itemData);
+
+            $data['Items'][] = $itemData;
         }
         return $data;
     }

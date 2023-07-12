@@ -6,6 +6,9 @@ use Pada\Tinkoff\Payment\Constant;
 use Pada\Tinkoff\Payment\Model\Receipt\AbstractItem;
 use Pada\Tinkoff\Payment\Model\Receipt\ItemBuilderInterface;
 
+/**
+ * @see https://www.tinkoff.ru/kassa/develop/api/receipt/#Items
+ */
 final class ItemBuilderFFD105 implements ItemBuilderInterface
 {
     private string $name = '';
@@ -40,31 +43,55 @@ final class ItemBuilderFFD105 implements ItemBuilderInterface
         return $this;
     }
 
+    /**
+     * none — без НДС
+     * @return $this
+     */
     public function taxNone(): self
     {
         return $this->tax(Constant::TAX_NONE);
     }
 
+    /**
+     * vat0 — 0%
+     * @return $this
+     */
     public function taxVat0(): self
     {
         return $this->tax(Constant::TAX_VAT0);
     }
 
+    /**
+     * vat10 — 10%
+     * @return $this
+     */
     public function taxVat10(): self
     {
         return $this->tax(Constant::TAX_VAT10);
     }
 
+    /**
+     * vat20 — 20%
+     * @return $this
+     */
     public function taxVat20(): self
     {
         return $this->tax(Constant::TAX_VAT20);
     }
 
+    /**
+     * vat110 — 10/110
+     * @return $this
+     */
     public function taxVat110(): self
     {
         return $this->tax(Constant::TAX_VAT110);
     }
 
+    /**
+     * vat120 — 20/120
+     * @return $this
+     */
     public function taxVat120(): self
     {
         return $this->tax(Constant::TAX_VAT120);
