@@ -3,3 +3,4 @@ vendor/
 composer.lock
 *.log
 *.cache
+.phpunit.cache
