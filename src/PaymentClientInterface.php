@@ -6,7 +6,6 @@ use Pada\Tinkoff\Payment\Contract\CancelResultInterface;
 use Pada\Tinkoff\Payment\Contract\ChargeInterface;
 use Pada\Tinkoff\Payment\Contract\ChargeResultInterface;
 use Pada\Tinkoff\Payment\Contract\CheckOrderResultInterface;
-use Pada\Tinkoff\Payment\Contract\ConfirmInterface;
 use Pada\Tinkoff\Payment\Contract\ConfirmResultInterface;
 use Pada\Tinkoff\Payment\Contract\GetStateResultInterface;
 use Pada\Tinkoff\Payment\Contract\NewPaymentInterface;
