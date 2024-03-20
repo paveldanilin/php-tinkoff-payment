@@ -1,5 +1,5 @@
 {
-    "name": "paveldanilin/php-tinkoff-payment",
+    "name": "grisha-sychev/php-tinkoff-payment",
     "description": "Tinkoff payment client for PHP 7.4+",
 	"keywords": ["Tinkoff", "pay", "payment", "kassa"],
     "type": "library",
