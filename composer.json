@@ -2,6 +2,7 @@
     "name": "grisha-sychev/php-tinkoff-payment",
     "description": "Tinkoff payment client for PHP 7.4+",
 	"keywords": ["Tinkoff", "pay", "payment", "kassa"],
+	"version": "2.0.0",
     "type": "library",
     "license": "MIT",
 	"authors": [
