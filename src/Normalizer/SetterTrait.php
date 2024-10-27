@@ -12,7 +12,7 @@ trait SetterTrait
      */
     public function setIfNotNull(string $key, $value, array &$data): void
     {
-        if (\is_callable($value)) {
+        if ($value instanceof \Closure) {
             $value = $value();
         }
         if (null === $value) {
