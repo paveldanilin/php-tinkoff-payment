@@ -13,7 +13,7 @@ final class ConfirmNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize(mixed $object, ?string $format = null, array $context = [])
+    public function normalize(mixed $object, ?string $format = null, array $context = []): array
     {
         /** @var ConfirmInterface $confirm */
         $confirm = $object;
@@ -43,4 +43,15 @@ final class ConfirmNormalizer implements NormalizerInterface
     {
         return $data instanceof ConfirmInterface;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            ConfirmInterface::class => true,
+        ];
+    }
+
 }

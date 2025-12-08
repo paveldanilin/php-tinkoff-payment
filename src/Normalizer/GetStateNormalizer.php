@@ -12,7 +12,7 @@ final class GetStateNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize(mixed $object, ?string $format = null, array $context = [])
+    public function normalize(mixed $object, ?string $format = null, array $context = []): array
     {
         /** @var GetStateInterface $state */
         $state = $object;
@@ -35,4 +35,15 @@ final class GetStateNormalizer implements NormalizerInterface
     {
         return $data instanceof GetStateInterface;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            GetStateInterface::class => true,
+        ];
+    }
+
 }

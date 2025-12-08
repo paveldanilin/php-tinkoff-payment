@@ -14,7 +14,7 @@ final class NewPaymentNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize(mixed $object, ?string $format = null, array $context = [])
+    public function normalize(mixed $object, ?string $format = null, array $context = []): array
     {
         /** @var NewPaymentInterface $initPayment */
         $initPayment = $object;
@@ -70,4 +70,15 @@ final class NewPaymentNormalizer implements NormalizerInterface
     {
         return $data instanceof NewPaymentInterface;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            NewPaymentInterface::class => true,
+        ];
+    }
+
 }

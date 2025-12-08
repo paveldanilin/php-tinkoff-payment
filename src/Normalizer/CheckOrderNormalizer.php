@@ -10,12 +10,11 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class CheckOrderNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    // NORMALIZE
 
     /**
      * {@inheritdoc}
      */
-    public function normalize(mixed $object, ?string $format = null, array $context = [])
+    public function normalize(mixed $object, ?string $format = null, array $context = []): array
     {
         /** @var CheckOrderInterface $checkOrder */
         $checkOrder = $object;
@@ -34,8 +33,6 @@ final class CheckOrderNormalizer implements NormalizerInterface, DenormalizerInt
     {
         return $data instanceof CheckOrderInterface;
     }
-
-    // DENORMALIZE
 
     /**
      * {@inheritdoc}
@@ -75,4 +72,15 @@ final class CheckOrderNormalizer implements NormalizerInterface, DenormalizerInt
     {
         return CheckOrderResult::class === $type;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            CheckOrderResult::class => true,
+        ];
+    }
+
 }

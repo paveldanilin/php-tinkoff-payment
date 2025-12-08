@@ -10,7 +10,7 @@ final class ChargeNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize(mixed $object, ?string $format = null, array $context = [])
+    public function normalize(mixed $object, ?string $format = null, array $context = []): array
     {
         /** @var ChargeInterface $charge */
         $charge = $object;
@@ -41,4 +41,15 @@ final class ChargeNormalizer implements NormalizerInterface
     {
         return $data instanceof ChargeInterface;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            ChargeInterface::class => true,
+        ];
+    }
+
 }

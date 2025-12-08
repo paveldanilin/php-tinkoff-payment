@@ -13,7 +13,7 @@ final class CancelPaymentNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize(mixed $object, ?string $format = null, array $context = [])
+    public function normalize(mixed $object, ?string $format = null, array $context = []): array
     {
         /** @var CancelInterface $cancelPayment */
         $cancelPayment = $object;
@@ -43,4 +43,15 @@ final class CancelPaymentNormalizer implements NormalizerInterface
     {
         return $data instanceof CancelInterface;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            CancelInterface::class => true,
+        ];
+    }
+
 }
