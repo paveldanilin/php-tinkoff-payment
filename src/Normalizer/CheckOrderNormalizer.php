@@ -13,12 +13,9 @@ final class CheckOrderNormalizer implements NormalizerInterface, DenormalizerInt
     // NORMALIZE
 
     /**
-     * @param mixed $object
-     * @param string|null $format
-     * @param array $context
-     * @return array
+     * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $object, ?string $format = null, array $context = [])
     {
         /** @var CheckOrderInterface $checkOrder */
         $checkOrder = $object;
@@ -31,11 +28,9 @@ final class CheckOrderNormalizer implements NormalizerInterface, DenormalizerInt
     }
 
     /**
-     * @param mixed $data
-     * @param string|null $format
-     * @return bool
+     * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
         return $data instanceof CheckOrderInterface;
     }
@@ -43,13 +38,9 @@ final class CheckOrderNormalizer implements NormalizerInterface, DenormalizerInt
     // DENORMALIZE
 
     /**
-     * @param mixed $data
-     * @param string $type
-     * @param string|null $format
-     * @param array $context
-     * @return CheckOrderResult
+     * {@inheritdoc}
      */
-    public function denormalize($data, $type, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): CheckOrderResult
     {
         $checkOrderResponse = new CheckOrderResult();
 
@@ -78,12 +69,9 @@ final class CheckOrderNormalizer implements NormalizerInterface, DenormalizerInt
     }
 
     /**
-     * @param mixed $data
-     * @param string $type
-     * @param string|null $format
-     * @return bool
+     * {@inheritdoc}
      */
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
         return CheckOrderResult::class === $type;
     }
