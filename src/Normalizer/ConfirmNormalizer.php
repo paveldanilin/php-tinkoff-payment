@@ -10,7 +10,10 @@ final class ConfirmNormalizer implements NormalizerInterface
     use SetterTrait;
     use ReceiptNormalizerTrait;
 
-    public function normalize($object, $format = null, array $context = [])
+    /**
+     * {@inheritdoc}
+     */
+    public function normalize(mixed $object, ?string $format = null, array $context = []): array
     {
         /** @var ConfirmInterface $confirm */
         $confirm = $object;
@@ -33,8 +36,22 @@ final class ConfirmNormalizer implements NormalizerInterface
         return $data;
     }
 
-    public function supportsNormalization($data, $format = null)
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
         return $data instanceof ConfirmInterface;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            ConfirmInterface::class => true,
+        ];
+    }
+
 }

@@ -7,9 +7,10 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class ChargeNormalizer implements NormalizerInterface
 {
-    // NORMALIZE
-
-    public function normalize($object, $format = null, array $context = [])
+    /**
+     * {@inheritdoc}
+     */
+    public function normalize(mixed $object, ?string $format = null, array $context = []): array
     {
         /** @var ChargeInterface $charge */
         $charge = $object;
@@ -33,8 +34,22 @@ final class ChargeNormalizer implements NormalizerInterface
         return $data;
     }
 
-    public function supportsNormalization($data, $format = null)
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
         return $data instanceof ChargeInterface;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            ChargeInterface::class => true,
+        ];
+    }
+
 }
